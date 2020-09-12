@@ -1,0 +1,86 @@
+﻿@model IEnumerable<Creatorz_Task.Models.tblCustomer>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="~/style.css" rel="stylesheet" type="text/css" />
+    <script src="~/vendor/jquery/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="~/vendor/DataTables/jquery.datatables.min.css">
+    <script src="~/vendor/DataTables/jquery.dataTables.min.js" type="text/javascript"></script>
+    <link rel="stylesheet" href="~/vendor/DataTables/buttons.datatables.min.css">
+    <script src="~/vendor/DataTables/dataTables.buttons.min.js" type="text/javascript"></script>
+    <script src="~/vendor/DataTables/jszip.min.js" type="text/javascript"></script>
+    <script src="~/vendor/DataTables/pdfmake.min.js" type="text/javascript"></script>
+    <script src="~/vendor/DataTables/vfs_fonts.js" type="text/javascript"></script>
+    <script src="~/vendor/DataTables/buttons.html5.min.js" type="text/javascript"></script>
+    <script>
+        function Access(name) {
+            var Details = name.split(',');
+            var url = "Home/chkdebit?Name=" + Details[0] + "&contact=" + Details[1];
+
+            var ajax = new XMLHttpRequest();
+            ajax.open("GET", url, true);
+            ajax.onreadystatechange = function () {
+                document.getElementById("employeeTable").innerHTML = ajax.responseText;
+            };
+            ajax.send();
+
+        }
+    </script>
+</head>
+<body>
+    <div>
+        <div class="container">
+            <table name="employeeTable" id="employeeTable" class="display" cellspacing="0" width="100%">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Contact No</th>
+                        <th>Amount</th>
+                        <th>Sale Type</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @*<a href="#" onclick="Access(this.title)" title="@item.Name,@item.ContactNo">Check Balance</a>*@
+                                <a href="@Url.Action("Credit",new {@name=item.Name,@contact = item.ContactNo })">Click</a>
+                            </td>
+                            <td>@item.Id</td>
+                            <td>@item.Name</td>
+                            <td>@item.ContactNo</td>
+                            <td>@item.Amount</td>
+                            <td>@item.SaleType</td>
+                            <td>@item.Date</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <script>
+            $(document).ready(function () {
+                $('#employeeTable').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        { extend: 'copy', attr: { id: 'allan' } }, 'csv', 'excel', 'pdf'
+                    ]
+                });
+            });
+        </script>
+
+
+    </div>
+</body>
+</html>

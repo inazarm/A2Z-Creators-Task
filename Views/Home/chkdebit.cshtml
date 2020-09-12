@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Creatorz_Task.Models.SP_CreditDebit_Result>
+    <thead>
+
+        <tr>
+            <td colspan="4">@ViewBag.data</td>
+        </tr>
+        <tr>
+            <th>Date</th>
+            <th>Debit</th>
+            <th>Credit</th>
+            <th>Balance</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @{ 
+            int debit = 0;
+            int credit = 0;
+             
+        }
+        @foreach (var item in Model)
+        {
+            if (item.D != null)
+            {
+                debit = Convert.ToInt32(item.D.ToString());
+            }
+            if (item.C != null)
+            {
+                credit = Convert.ToInt32(item.C.ToString());
+            }
+        
+
+        <tr>
+            <td>
+                @item.Date
+
+            </td>
+            <td>
+                @item.D
+
+            </td>
+            <td>
+                @item.C
+            </td>
+            <td>
+                @if (item.D != null)
+                {
+                    @debit
+                }
+                @if (item.C != null)
+                {
+                    //@credit
+                    int v = (@debit - @credit);
+                    @v
+
+                }
+            </td>
+        </tr>
+        }
+    </tbody>
+
